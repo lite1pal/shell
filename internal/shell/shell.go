@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/user"
+	"strings"
 )
 
 type Shell struct {
@@ -51,13 +53,28 @@ func (s *Shell) Run() error {
 }
 
 func (s *Shell) showInputIndicator() error {
+	// Get the working directory
 	workDir, err := os.Getwd()
 
 	if err != nil {
 		return err
 	}
 
-	fmt.Fprintf(s.out, "%s > ", workDir)
+	currentUser, err := user.Current()
+
+	if err != nil {
+		return err
+	}
+
+	hostname, err := os.Hostname()
+
+	if err != nil {
+		return err
+	}
+
+	trimmedHostname := strings.TrimSuffix(hostname, ".local")
+
+	fmt.Fprintf(s.out, "%s@%s %s > ", currentUser.Username, trimmedHostname, workDir)
 
 	return nil
 }

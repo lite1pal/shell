@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> It's a learning project, not a production-ready shell
+
 # shell
 
 A minimal Unix-style interactive shell written in Go.
